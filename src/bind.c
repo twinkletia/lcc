@@ -1,6 +1,7 @@
 #include "c.h"
 #undef yy
 #define yy \
+xx(tep,   tepIR) \
 xx(alpha/osf,    alphaIR) \
 xx(mips/irix,    mipsebIR) \
 xx(sparc/sun,    sparcIR) \

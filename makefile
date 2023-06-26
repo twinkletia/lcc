@@ -1,4 +1,9 @@
 # $Id$
+BUILDDIR=tep
+HOSTFILE=etc/tep.c
+TARGET=tep
+INSTALLDIR=/usr/local/lib/lcc
+INSTALLEXE=/usr/local/bin/
 A=.a
 O=.o
 E=
@@ -20,6 +25,13 @@ what:
 	-@echo make all rcc lburg cpp lcc bprint liblcc triple clean clobber
 
 all::	rcc lburg cpp lcc bprint liblcc
+
+install:	rcc lburg cpp lcc bprint liblcc
+	-mkdir -p $(INSTALLDIR)
+	cp $Brcc$E $Blburg$E $Bcpp$E $Blcc$E $Bbprint$E $Bliblcc$A $(INSTALLDIR)
+	-rm $(INSTALLEXE)lcc$E
+	ln -s $(INSTALLDIR)/lcc$E $(INSTALLEXE)
+
 
 rcc:	$Brcc$E
 lburg:	$Blburg$E
@@ -58,6 +70,7 @@ RCCOBJS=$Balloc$O \
 	$Bgen$O \
 	$Bbytecode$O \
 	$Balpha$O \
+	$Btep$O \
 	$Bmips$O \
 	$Bsparc$O \
 	$Bstab$O \
@@ -104,6 +117,7 @@ $Bstab$O:	src/stab.c src/stab.h;	$(CC) $(CFLAGS) -c -Isrc -o $@ src/stab.c
 
 $Bdagcheck$O:	$Bdagcheck.c;	$(CC) $(CFLAGS) -c -Isrc -o $@ $Bdagcheck.c
 $Balpha$O:	$Balpha.c;	$(CC) $(CFLAGS) -c -Isrc -o $@ $Balpha.c
+$Btep$O:	$Btep.c;	$(CC) $(CFLAGS) -c -Isrc -o $@ $Btep.c
 $Bmips$O:	$Bmips.c;	$(CC) $(CFLAGS) -c -Isrc -o $@ $Bmips.c
 $Bsparc$O:	$Bsparc.c;	$(CC) $(CFLAGS) -c -Isrc -o $@ $Bsparc.c
 $Bx86$O:	$Bx86.c;	$(CC) $(CFLAGS) -c -Isrc -o $@ $Bx86.c
@@ -111,6 +125,7 @@ $Bx86linux$O:	$Bx86linux.c;	$(CC) $(CFLAGS) -c -Isrc -o $@ $Bx86linux.c
 
 $Bdagcheck.c:	$Blburg$E src/dagcheck.md; $Blburg src/dagcheck.md $@
 $Balpha.c:	$Blburg$E src/alpha.md;    $Blburg src/alpha.md    $@
+$Btep.c:	$Blburg$E src/tep.md;    $Blburg src/tep.md    $@
 $Bmips.c:	$Blburg$E src/mips.md;     $Blburg src/mips.md     $@
 $Bsparc.c:	$Blburg$E src/sparc.md;    $Blburg src/sparc.md    $@
 $Bx86.c:	$Blburg$E src/x86.md;      $Blburg src/x86.md      $@
@@ -221,7 +236,7 @@ testclean:
 
 clean::		testclean
 		$(RM) $B*$O
-		$(RM) $Bdagcheck.c $Balpha.c $Bmips.c $Bx86.c $Bsparc.c $Bx86linux.c
+		$(RM) $Bdagcheck.c $Balpha.c $Btep.c $Bmips.c $Bx86.c $Bsparc.c $Bx86linux.c
 		$(RM) $Brcc1$E $Brcc1$E $B1rcc$E $B2rcc$E
 		$(RM) $B*.ilk
 
@@ -260,6 +275,7 @@ RCCSRCS=src/alloc.c \
 	src/stab.c \
 	$Bdagcheck.c \
 	$Balpha.c \
+	$Btep.c \
 	$Bmips.c \
 	$Bsparc.c \
 	$Bx86linux.c \
